@@ -29,10 +29,9 @@ if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 Write-Host "--- Preparando Deploy (Windeployqt) ---"
 
 $DistDir = "dist"
-$AbsDistDir = Resolve-Path -Path $DistDir
 if (Test-Path $DistDir) { Remove-Item -Recurse -Force $DistDir }
 New-Item -ItemType Directory -Path $DistDir
-
+$AbsDistDir = Resolve-Path -Path $DistDir
 
 Copy-Item "$BuildDir/$Config/$ProjectName.exe" -Destination $AbsDistDir
 
