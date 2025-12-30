@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/images">
+        <file>icons/logo.ico</file>
+        <file>icons/logo-flow.svg</file>
+        <file>icons/logo-naxistudio.svg</file>
+    </qresource>
+</RCC>
