@@ -38,6 +38,12 @@ jobs:
           target: 'desktop'
           arch: 'win64_msvc2022_64'
 
+      - name: Create installer
+        if: matrix.os == 'windows-latest'
+        uses: joncloud/makensis-action@v5.0
+        with:
+          arguments: "/V4"
+
       # --- BUILD WINDOWS ---
       - name: Build Windows (Script)
         if: matrix.os == 'windows-latest'

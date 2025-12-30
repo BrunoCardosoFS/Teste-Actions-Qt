@@ -39,13 +39,14 @@ $NsisScriptPath = Join-Path $PSScriptRoot "nsis\installer.nsi"
 if (-not (Test-Path $NsisScriptPath)) {
     Write-Error "O arquivo installer.nsi não foi encontrado em: $NsisScriptPath"
     exit 1
+}else{
+    makensis /DBUILD_DIR="$DistDir" /DVERSION="$Version" /V4 "$NsisScriptPath"
+
+    if ($LASTEXITCODE -ne 0) { 
+        Write-Error "Falha ao criar o instalador NSIS"
+        exit $LASTEXITCODE 
+    }
+
+    Write-Host "--- Instalador Criado com Sucesso ---"
 }
 
-makensis /DBUILD_DIR="$DistDir" /DVERSION="$Version" /V4 "$NsisScriptPath"
-
-if ($LASTEXITCODE -ne 0) { 
-    Write-Error "Falha ao criar o instalador NSIS"
-    exit $LASTEXITCODE 
-}
-
-Write-Host "--- Instalador Criado com Sucesso ---"
