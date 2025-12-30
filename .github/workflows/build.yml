@@ -20,16 +20,6 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-
-      - name: Extract Version
-        id: get_version
-        shell: bash
-        run: |
-          TAG_NAME=${GITHUB_REF_NAME}
-          CLEAN_VERSION=${TAG_NAME#v}
-          echo "APP_VERSION=$CLEAN_VERSION" >> $GITHUB_ENV
-          echo "Tag original: $TAG_NAME"
-          echo "Versão limpa: $CLEAN_VERSION"
         
       - name: Install NSIS
         uses: repolevedavaj/install-nsis@v1.1.0
@@ -47,7 +37,7 @@ jobs:
       - name: Build Windows (Script)
         if: matrix.os == 'windows-latest'
         shell: pwsh
-        run: ./.github/scripts/BuildWindows.ps1 -ProjectName "Programa" -Version ${APP_VERSION}
+        run: ./.github/scripts/BuildWindows.ps1 -ProjectName "Programa" -Version ${GITHUB_REF_NAME}
 
       # --- CRIAÇÃO DA RELEASE ---
       - name: Release
@@ -55,8 +45,8 @@ jobs:
         if: startsWith(github.ref, 'refs/tags/')
         with:
           files: |
-            Programa-v${APP_VERSION}-Portable-Windows-x86_64.zip
-            Programa-v${APP_VERSION}-Installer-Windows-x86_64.exe
+            Programa-${GITHUB_REF_NAME}-Portable-Windows-x86_64.zip
+            Programa-${GITHUB_REF_NAME}-Installer-Windows-x86_64.exe
           body_path: release.md
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

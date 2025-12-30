@@ -12,7 +12,10 @@ ManifestDPIAware true
 !define COMP_NAME "NaxiStudio Project"
 !define WEB_SITE "https://naxistudio.pages.dev"
 !ifndef VERSION
-  !define VERSION "0.0.1" #<major version>.<minor version>.<build number>
+  !define VERSION "v0.0.1" #v<major version>.<minor version>.<build number>
+!endif
+!ifndef CLEAN_VERSION
+  !define CLEAN_VERSION "0.0.1" #<major version>.<minor version>.<build number>
 !endif
 !define COPYRIGHT "Bruno Cardoso © 2025"
 !define DESCRIPTION "Teste do Github Actions."
@@ -33,7 +36,7 @@ ManifestDPIAware true
 
 ######################################################################
 
-VIProductVersion  "${VERSION}.0"
+VIProductVersion  "${CLEAN_VERSION}.0"
 VIAddVersionKey "ProductName"  "${APP_NAME}"
 VIAddVersionKey "CompanyName"  "${COMP_NAME}"
 VIAddVersionKey "LegalCopyright"  "${COPYRIGHT}"

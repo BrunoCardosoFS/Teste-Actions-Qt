@@ -3,8 +3,20 @@ param (
     [string]$BuildDir = "build",
     [string]$Config = "Release",
     [string]$ProjectName = "Programa",
-    [string]$Version = "0.0.0"
+    [string]$Version = "v0.0.1"
 )
+
+Write-Host "--- Processando Versão ---"
+Write-Host "Entrada bruta: $Version"
+$RegexPattern = "\d+\.\d+\.\d+"
+$Match = [regex]::Match($Version, $RegexPattern)
+if ($Match.Success) {
+    $CleanVersion = $Match.Value
+} else {
+    Write-Warning "Padrão de versão não encontrado em '$Version'. Usando fallback '1.0.0'."
+    $CleanVersion = "1.0.0"
+}
+Write-Host "Versão limpa: $CleanVersion"
 
 Write-Host "--- Iniciando Configuração CMake ---"
 cmake -B $BuildDir -S . -DCMAKE_BUILD_TYPE=$Config
@@ -43,10 +55,14 @@ if (-not (Test-Path $NsisScriptPath)) {
 
 $AbsDistDir = Resolve-Path -Path $DistDir
 
-Write-Host "\n-- NSIS Script Path: $NsisScriptPath"
-Write-Host "-- Absolute Dist Path $AbsDistDir \n"
+Write-Host " "
+Write-Host "-- Absolute Dist Path $AbsDistDir "
+Write-Host "-- Version $Version"
+Write-Host "-- Clean Version $CleanVersion"
+Write-Host "-- NSIS Script Path: $NsisScriptPath"
+Write-Host " "
 
-makensis /DBUILD_DIR="$AbsDistDir" /DVERSION="$Version" /V4 "$NsisScriptPath"
+makensis /DBUILD_DIR="$AbsDistDir" /DVERSION="$Version" /DCLEAN_VERSION="$CleanVersion" /V4 "$NsisScriptPath"
 
 if ($LASTEXITCODE -ne 0) { 
     Write-Error "Falha ao criar o instalador NSIS"
