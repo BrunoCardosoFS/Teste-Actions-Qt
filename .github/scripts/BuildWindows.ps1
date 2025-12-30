@@ -41,9 +41,12 @@ if (-not (Test-Path $NsisScriptPath)) {
     exit 1
 }
 
-Write-Host "$NsisScriptPath"
+$AbsDistDir = Resolve-Path -Path $DistDir
 
-makensis /DBUILD_DIR="$DistDir" /DVERSION="$Version" /V4 "$NsisScriptPath"
+Write-Host "\n-- NSIS Script Path: $NsisScriptPath"
+Write-Host "-- Absolute Dist Path $AbsDistDir \n"
+
+makensis /DBUILD_DIR="$AbsDistDir" /DVERSION="$Version" /V4 "$NsisScriptPath"
 
 if ($LASTEXITCODE -ne 0) { 
     Write-Error "Falha ao criar o instalador NSIS"

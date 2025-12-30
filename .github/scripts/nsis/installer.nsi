@@ -16,8 +16,8 @@ ManifestDPIAware true
 !endif
 !define COPYRIGHT "Bruno Cardoso © 2025"
 !define DESCRIPTION "Teste do Github Actions."
-!define LICENSE_TXT "${BUILD_DIR}\..\COPYING"
-!define INSTALLER_NAME "../${APP_NAME}-v${VERSION}-Installer-Windows-x86_64.exe"
+!define LICENSE_TXT "${BUILD_DIR}/../COPYING"
+!define INSTALLER_NAME "${BUILD_DIR}/../${APP_NAME}-v${VERSION}-Installer-Windows-x86_64.exe"
 !define MAIN_APP_EXE "${APP_NAME}.exe"
 !define INSTALL_TYPE "SetShellVarContext all"
 !define REG_ROOT "HKLM"
