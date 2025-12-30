@@ -31,12 +31,12 @@ Write-Host "--- Preparing Deploy ---"
 $DistDir = "dist"
 if (Test-Path $DistDir) { Remove-Item -Recurse -Force $DistDir }
 New-Item -ItemType Directory -Path $DistDir
-Copy-Item "$BuildDir/$Config/$ProjectName.exe" -Destination $AbsDistDir
 $AbsDistDir = Resolve-Path -Path $DistDir
+Copy-Item "$BuildDir\$Config\$ProjectName.exe" -Destination $AbsDistDir
 
 
 Write-Host "--- Windeployqt ---"
-windeployqt --dir $AbsDistDir --no-translations "$AbsDistDir/$ProjectName.exe"
+windeployqt --dir $AbsDistDir --no-translations "$AbsDistDir\$ProjectName.exe"
 
 
 Write-Host "--- Creating a ZIP File ---"
@@ -47,7 +47,7 @@ Write-Host "Build and Packaging completed: $ZipName"
 
 Write-Host "--- Downloading Visual C++ Redistributable ---"
 $VcRedistUrl = "https://aka.ms/vc14/vc_redist.x64.exe"
-$VcRedistPath = Join-Path $AbsDistDir "/../vc_redist.x64.exe"
+$VcRedistPath = Join-Path $AbsDistDir "\..\vc_redist.x64.exe"
 Try {
     Invoke-WebRequest -Uri $VcRedistUrl -OutFile $VcRedistPath -UseBasicParsing
     Write-Host "VC Redist downloaded on: $VcRedistPath"
