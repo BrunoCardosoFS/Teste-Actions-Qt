@@ -40,8 +40,8 @@ windeployqt --dir $AbsDistDir --no-translations "$AbsDistDir/$ProjectName.exe"
 
 
 Write-Host "--- Creating a ZIP File ---"
-$ZipName = "${AbsDistDir}/../${ProjectName}-${Version}-Portable-Windows-x86_64.zip"
-Compress-Archive -Path "$AbsDistDir/*" -DestinationPath $ZipName -Force
+$ZipName = "${AbsDistDir}\..\${ProjectName}-${Version}-Portable-Windows-x86_64.zip"
+Compress-Archive -Path "$AbsDistDir\*" -DestinationPath $ZipName -Force
 Write-Host "Build and Packaging completed: $ZipName"
 
 

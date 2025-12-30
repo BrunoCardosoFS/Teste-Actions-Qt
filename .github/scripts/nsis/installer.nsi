@@ -19,8 +19,8 @@ ManifestDPIAware true
 !endif
 !define COPYRIGHT "Bruno Cardoso © 2025"
 !define DESCRIPTION "Teste do Github Actions."
-!define LICENSE_TXT "${BUILD_DIR}/../COPYING"
-!define INSTALLER_NAME "${BUILD_DIR}/../${APP_NAME}-${VERSION}-Installer-Windows-x86_64.exe"
+!define LICENSE_TXT "${BUILD_DIR}\..\COPYING"
+!define INSTALLER_NAME "${BUILD_DIR}\..\${APP_NAME}-${VERSION}-Installer-Windows-x86_64.exe"
 !define MAIN_APP_EXE "${APP_NAME}.exe"
 !define INSTALL_TYPE "SetShellVarContext all"
 !define REG_ROOT "HKLM"
@@ -144,6 +144,14 @@ FunctionEnd
 
 ######################################################################
 
+Section -MainProgram
+SetRegView 64
+${INSTALL_TYPE}
+SetOverwrite ifnewer
+SetOutPath "$INSTDIR"
+File /r "${BUILD_DIR}\*"
+SectionEnd
+
 Section "Visual Studio Runtime"
   ReadRegDWORD $0 HKLM "SOFTWARE\Microsoft\VisualStudio\14.0\VC\Runtimes\x64" "Installed"
 
@@ -156,15 +164,6 @@ Section "Visual Studio Runtime"
     Delete "$TEMP\vc_redist.x64.exe"
     DetailPrint "Visual C++ Redist instalado com sucesso."
   ${EndIf}
-  SetOutPath "$INSTDIR"
-SectionEnd
-
-Section -MainProgram
-SetRegView 64
-${INSTALL_TYPE}
-SetOverwrite ifnewer
-SetOutPath "$INSTDIR"
-File /r "${BUILD_DIR}\*"
 SectionEnd
 
 ######################################################################
