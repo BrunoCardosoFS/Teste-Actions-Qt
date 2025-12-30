@@ -28,12 +28,9 @@ jobs:
           TAG_NAME=${GITHUB_REF_NAME}
           echo "Tag atual: $TAG_NAME"
           
-          # Lógica: Se a tag contém um hífen "-", é pre-release (ex: v1.0-beta)
           if [[ "$TAG_NAME" == *"-"* ]]; then
-            echo "É pre-release"
             echo "IS_PRERELEASE=true" >> $GITHUB_ENV
           else
-            echo "É release"
             echo "IS_PRERELEASE=false" >> $GITHUB_ENV
           fi
         

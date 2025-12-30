@@ -1,11 +1,11 @@
+Unicode true
+ManifestDPIAware true
 
+!include "LogicLib.nsh"
 
 !ifndef BUILD_DIR
   !define BUILD_DIR ".\dist"
 !endif
-
-Unicode true
-ManifestDPIAware true
 
 !define APP_NAME "Programa"
 !define SHORT_APP_NAME "Programa"
@@ -144,12 +144,20 @@ FunctionEnd
 
 ######################################################################
 
-; Section "Visual Studio Runtime"
-;   SetOutPath "$INSTDIR"
-;   File "C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Redist\MSVC\14.40.33807\vc_redist.x64.exe"
-;   ExecWait "$INSTDIR\vc_redist.x64.exe /quiet /norestart"
-;   Delete "$INSTDIR\vc_redist.x64.exe"
-; SectionEnd
+Section "Visual Studio Runtime"
+  ReadRegDWORD $0 HKLM "SOFTWARE\Microsoft\VisualStudio\14.0\VC\Runtimes\x64" "Installed"
+
+  ${If} $0 != 1
+    DetailPrint "Visual C++ Redist não encontrado. Instalando..."
+
+    SetOutPath "$TEMP"
+    File "${BUILD_DIR}\..\vc_redist.x64.exe"
+    ExecWait '"$TEMP\vc_redist.x64.exe" /install /quiet /norestart'
+    Delete "$TEMP\vc_redist.x64.exe"
+    DetailPrint "Visual C++ Redist instalado com sucesso."
+  ${EndIf}
+  SetOutPath "$INSTDIR"
+SectionEnd
 
 Section -MainProgram
 SetRegView 64
