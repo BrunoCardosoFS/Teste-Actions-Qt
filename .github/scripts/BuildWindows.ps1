@@ -23,7 +23,7 @@ New-Item -ItemType Directory -Path $DistDir
 Copy-Item "$BuildDir/$Config/$ProjectName.exe" -Destination $DistDir
 
 Write-Host "--- Rodando Windeployqt ---"
-windeployqt --dir $DistDir --no-translations --no-compiler-runtime "$DistDir/$ProjectName.exe"
+windeployqt --dir $DistDir --no-translations "$DistDir/$ProjectName.exe"
 
 Write-Host "--- Criando Arquivo ZIP ---"
 $ZipName = "${ProjectName}-Windows-x86_64.zip"
