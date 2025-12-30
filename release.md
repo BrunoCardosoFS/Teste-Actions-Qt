@@ -1,5 +1,6 @@
-## Programa V1.0.1
+## Programa V1.0.2
 
 - Nesta versão você encontra muita coisa nova
 ---
-- É isso aí
+- Adição da versão no título da janela
+- E muito mais!
