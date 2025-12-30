@@ -17,7 +17,6 @@ jobs:
       matrix:
         include:
           - os: windows-latest
-            qt_ver: 6.8.3
             artifact_name: Programa-Windows-x86_64.zip
             mime_type: application/zip
 
@@ -28,7 +27,7 @@ jobs:
       - name: Install Qt
         uses: jurplel/install-qt-action@v3
         with:
-          version: ${{ matrix.qt_ver }}
+          version: '6.8.3'
           host: 'windows'
           target: 'desktop'
           arch: 'win64_msvc2022_64'
