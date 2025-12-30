@@ -19,7 +19,7 @@ if ($Match.Success) {
 Write-Host "Versão limpa: $CleanVersion"
 
 Write-Host "--- Iniciando Configuração CMake ---"
-cmake -B $BuildDir -S . -DCMAKE_BUILD_TYPE=$Config
+cmake -B $BuildDir -S . -DCMAKE_BUILD_TYPE=$Config -DAPP_VERSION="$Version" -DCLEAN_APP_VERSION="$CleanVersion"
 if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
 Write-Host "--- Compilando ---"
@@ -29,18 +29,19 @@ if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 Write-Host "--- Preparando Deploy (Windeployqt) ---"
 
 $DistDir = "dist"
+$AbsDistDir = Resolve-Path -Path $DistDir
 if (Test-Path $DistDir) { Remove-Item -Recurse -Force $DistDir }
 New-Item -ItemType Directory -Path $DistDir
 
 
-Copy-Item "$BuildDir/$Config/$ProjectName.exe" -Destination $DistDir
+Copy-Item "$BuildDir/$Config/$ProjectName.exe" -Destination $AbsDistDir
 
 Write-Host "--- Rodando Windeployqt ---"
-windeployqt --dir $DistDir --no-translations "$DistDir/$ProjectName.exe"
+windeployqt --dir $AbsDistDir --no-translations "$AbsDistDir/$ProjectName.exe"
 
 Write-Host "--- Criando Arquivo ZIP ---"
-$ZipName = "${ProjectName}-${Version}-Portable-Windows-x86_64.zip"
-Compress-Archive -Path "$DistDir/*" -DestinationPath $ZipName -Force
+$ZipName = "${AbsDistDir}/../${ProjectName}-${Version}-Portable-Windows-x86_64.zip"
+Compress-Archive -Path "$AbsDistDir/*" -DestinationPath $ZipName -Force
 
 Write-Host "Build e Empacotamento concluídos: $ZipName"
 
@@ -52,8 +53,6 @@ if (-not (Test-Path $NsisScriptPath)) {
     Write-Error "O arquivo installer.nsi não foi encontrado em: $NsisScriptPath"
     exit 1
 }
-
-$AbsDistDir = Resolve-Path -Path $DistDir
 
 Write-Host " "
 Write-Host "-- Absolute Dist Path $AbsDistDir "

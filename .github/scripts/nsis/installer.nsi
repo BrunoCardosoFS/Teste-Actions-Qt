@@ -52,7 +52,7 @@ OutFile "${INSTALLER_NAME}"
 BrandingText "${APP_NAME}"
 XPStyle on
 InstallDirRegKey "${REG_ROOT}" "${REG_APP_PATH}" ""
-InstallDir "$PROGRAMFILES\${SHORT_APP_NAME}"
+InstallDir "$PROGRAMFILES64\${SHORT_APP_NAME}"
 
 ######################################################################
 
@@ -152,6 +152,7 @@ FunctionEnd
 ; SectionEnd
 
 Section -MainProgram
+SetRegView 64
 ${INSTALL_TYPE}
 SetOverwrite ifnewer
 SetOutPath "$INSTDIR"

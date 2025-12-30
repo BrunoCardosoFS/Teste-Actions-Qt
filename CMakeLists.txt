@@ -2,6 +2,17 @@ cmake_minimum_required(VERSION 3.16)
 
 project(Programa VERSION 0.1 LANGUAGES CXX)
 
+if(NOT DEFINED APP_VERSION)
+    set(APP_VERSION "v0.0.0-dev")
+endif()
+
+if(NOT DEFINED CLEAN_APP_VERSION)
+    set(CLEAN_APP_VERSION "0.0.0")
+endif()
+
+add_compile_definitions(APP_VERSION="${APP_VERSION}")
+
+
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
