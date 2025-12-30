@@ -36,10 +36,6 @@ jobs:
         with:
           nsis-version: '3.11'
 
-      - name: Teste NSIS
-        shell: pwsh
-        run: makensis
-
       - name: Install Qt
         uses: jurplel/install-qt-action@v3
         with:
