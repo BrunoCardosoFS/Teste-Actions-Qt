@@ -39,7 +39,7 @@ Write-Host "--- Rodando Windeployqt ---"
 windeployqt --dir $DistDir --no-translations "$DistDir/$ProjectName.exe"
 
 Write-Host "--- Criando Arquivo ZIP ---"
-$ZipName = "${ProjectName}-v${Version}-Portable-Windows-x86_64.zip"
+$ZipName = "${ProjectName}-${Version}-Portable-Windows-x86_64.zip"
 Compress-Archive -Path "$DistDir/*" -DestinationPath $ZipName -Force
 
 Write-Host "Build e Empacotamento concluídos: $ZipName"

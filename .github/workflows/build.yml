@@ -45,8 +45,8 @@ jobs:
         if: startsWith(github.ref, 'refs/tags/')
         with:
           files: |
-            Programa-${GITHUB_REF_NAME}-Portable-Windows-x86_64.zip
-            Programa-${GITHUB_REF_NAME}-Installer-Windows-x86_64.exe
+            Programa-${{ github.ref_name }}-Portable-Windows-x86_64.zip
+            Programa-${{ github.ref_name }}-Installer-Windows-x86_64.exe
           body_path: release.md
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

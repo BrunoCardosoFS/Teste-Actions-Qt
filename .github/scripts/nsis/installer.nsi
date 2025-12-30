@@ -12,7 +12,7 @@ ManifestDPIAware true
 !define COMP_NAME "NaxiStudio Project"
 !define WEB_SITE "https://naxistudio.pages.dev"
 !ifndef VERSION
-  !define VERSION "v0.0.1" #v<major version>.<minor version>.<build number>
+  !define VERSION "v0.0.1" #<major version>.<minor version>.<build number>
 !endif
 !ifndef CLEAN_VERSION
   !define CLEAN_VERSION "0.0.1" #<major version>.<minor version>.<build number>
@@ -20,7 +20,7 @@ ManifestDPIAware true
 !define COPYRIGHT "Bruno Cardoso © 2025"
 !define DESCRIPTION "Teste do Github Actions."
 !define LICENSE_TXT "${BUILD_DIR}/../COPYING"
-!define INSTALLER_NAME "${BUILD_DIR}/../${APP_NAME}-v${VERSION}-Installer-Windows-x86_64.exe"
+!define INSTALLER_NAME "${BUILD_DIR}/../${APP_NAME}-${VERSION}-Installer-Windows-x86_64.exe"
 !define MAIN_APP_EXE "${APP_NAME}.exe"
 !define INSTALL_TYPE "SetShellVarContext all"
 !define REG_ROOT "HKLM"
