@@ -30,6 +30,15 @@ jobs:
           echo "APP_VERSION=$CLEAN_VERSION" >> $GITHUB_ENV
           echo "Tag original: $TAG_NAME"
           echo "Versão limpa: $CLEAN_VERSION"
+        
+      - name: Install NSIS
+        uses: repolevedavaj/install-nsis@v1.1.0
+        with:
+          nsis-version: '3.11'
+
+      - name: Teste NSIS
+        shell: pwsh
+        run: makensis
 
       - name: Install Qt
         uses: jurplel/install-qt-action@v3
@@ -37,11 +46,6 @@ jobs:
           version: '6.8.3'
           target: 'desktop'
           arch: 'win64_msvc2022_64'
-
-      - name: Install NSIS
-        uses: repolevedavaj/install-nsis@v1.1.0
-        with:
-          nsis-version: '3.11'
 
       # --- BUILD WINDOWS ---
       - name: Build Windows (Script)
