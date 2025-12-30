@@ -15,30 +15,34 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        include:
-          - os: windows-latest
-            artifact_name: Programa-Windows-x86_64.zip
-            mime_type: application/zip
+          os: [windows-latest]
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Extract Version
+        id: get_version
+        shell: bash
+        run: |
+          TAG_NAME=${GITHUB_REF_NAME}
+          CLEAN_VERSION=${TAG_NAME#v}
+          echo "APP_VERSION=$CLEAN_VERSION" >> $GITHUB_ENV
+          echo "Tag original: $TAG_NAME"
+          echo "Versão limpa: $CLEAN_VERSION"
+
       - name: Install Qt
         uses: jurplel/install-qt-action@v3
         with:
           version: '6.8.3'
-          host: 'windows'
           target: 'desktop'
           arch: 'win64_msvc2022_64'
-          install-deps: 'true'
-          use-official: true
 
       # --- BUILD WINDOWS ---
       - name: Build Windows (Script)
         if: matrix.os == 'windows-latest'
         shell: pwsh
-        run: ./.github/scripts/BuildWindows.ps1 -ProjectName "Programa"
+        run: ./.github/scripts/BuildWindows.ps1 -ProjectName "Programa" -Version ${APP_VERSION}
 
       # --- CRIAÇÃO DA RELEASE ---
       - name: Release
@@ -46,7 +50,8 @@ jobs:
         if: startsWith(github.ref, 'refs/tags/')
         with:
           files: |
-            Programa-Windows-x86_64.zip
+            Programa-v${APP_VERSION}-Portable-Windows-x86_64.zip
+            Programa-v${APP_VERSION}-Installer-Windows-x86_64.exe
           body_path: release.md
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
