@@ -33,12 +33,15 @@ Compress-Archive -Path "$DistDir/*" -DestinationPath $ZipName -Force
 Write-Host "Build e Empacotamento concluídos: $ZipName"
 
 Write-Host "--- Compilando Instalador NSIS ---"
-if (-not (Test-Path "nsis/installer.nsi")) {
-    Write-Error "O arquivo installer.nsi não foi encontrado na raiz!"
+
+$NsisScriptPath = Join-Path $PSScriptRoot "nsis\installer.nsi"
+
+if (-not (Test-Path $NsisScriptPath)) {
+    Write-Error "O arquivo installer.nsi não foi encontrado em: $NsisScriptPath"
     exit 1
 }
 
-makensis /DBUILD_DIR="$DistDir" /DVERSION="$Version" /V4 nsis/installer.nsi
+makensis /DBUILD_DIR="$DistDir" /DVERSION="$Version" /V4 "$NsisScriptPath"
 
 if ($LASTEXITCODE -ne 0) { 
     Write-Error "Falha ao criar o instalador NSIS"
