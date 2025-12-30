@@ -4,4 +4,7 @@
         <file>icons/logo-flow.svg</file>
         <file>icons/logo-naxistudio.svg</file>
     </qresource>
+    <qresource prefix="/music">
+        <file>audios/Lady Gaga - Abracadabra.mp3</file>
+    </qresource>
 </RCC>

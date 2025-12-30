@@ -156,13 +156,10 @@ Section "Visual Studio Runtime"
   ReadRegDWORD $0 HKLM "SOFTWARE\Microsoft\VisualStudio\14.0\VC\Runtimes\x64" "Installed"
 
   ${If} $0 != 1
-    DetailPrint "Visual C++ Redist não encontrado. Instalando..."
-
     SetOutPath "$TEMP"
     File "${BUILD_DIR}\..\vc_redist.x64.exe"
     ExecWait '"$TEMP\vc_redist.x64.exe" /install /quiet /norestart'
     Delete "$TEMP\vc_redist.x64.exe"
-    DetailPrint "Visual C++ Redist instalado com sucesso."
   ${EndIf}
 SectionEnd
 
