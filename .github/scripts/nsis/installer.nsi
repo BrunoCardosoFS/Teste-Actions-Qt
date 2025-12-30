@@ -173,9 +173,9 @@ WriteUninstaller "$INSTDIR\uninstall.exe"
 ; !endif
 
 !ifndef REG_START_MENU
-CreateDirectory "$SMPROGRAMS\$APP_NAME"
-CreateShortCut "$SMPROGRAMS\$APP_NAME\${APP_NAME}.lnk" "$INSTDIR\${MAIN_APP_EXE}"
-CreateShortCut "$SMPROGRAMS\$APP_NAME\Uninstall ${APP_NAME}.lnk" "$INSTDIR\uninstall.exe"
+CreateDirectory "$SMPROGRAMS\${APP_NAME}"
+CreateShortCut "$SMPROGRAMS\${APP_NAME}\${APP_NAME}.lnk" "$INSTDIR\${MAIN_APP_EXE}"
+CreateShortCut "$SMPROGRAMS\${APP_NAME}\Uninstall ${APP_NAME}.lnk" "$INSTDIR\uninstall.exe"
 !endif
 
 WriteRegStr ${REG_ROOT} "${REG_APP_PATH}" "" "$INSTDIR\${MAIN_APP_EXE}"
@@ -203,8 +203,8 @@ RMDir /r "$INSTDIR"
 ; !endif
 
 !ifndef REG_START_MENU
-Delete "$SMPROGRAMS\$APP_NAME\${APP_NAME}.lnk"
-Delete "$SMPROGRAMS\$APP_NAME\Uninstall ${APP_NAME}.lnk"
+Delete "$SMPROGRAMS\${APP_NAME}\${APP_NAME}.lnk"
+Delete "$SMPROGRAMS\${APP_NAME}\Uninstall ${APP_NAME}.lnk"
 !endif
 
 DeleteRegKey ${REG_ROOT} "${REG_APP_PATH}"
