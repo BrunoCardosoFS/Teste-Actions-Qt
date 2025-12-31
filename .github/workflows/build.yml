@@ -55,15 +55,10 @@ jobs:
           New-Item -ItemType Directory -Path $DistDir\windows
           New-Item -ItemType Directory -Path $DistDir\ubuntu
 
-          $AbsDistDir = Resolve-Path -Path $DistDir
-          $AbsDistFilesDir = Resolve-Path -Path $DistDir\dist_files
-          $AbsDistWindowsDir = Resolve-Path -Path $DistDir\windows
-          $AbsDistUbuntuDir = Resolve-Path -Path $DistDir\ubuntu
-
-          "DIST_DIR=$AbsDistDir" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
-          "DIST_FILES_DIR=$AbsDistFilesDir" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
-          "DIST_WINDOWS_DIR=$AbsDistWindowsDir" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
-          "DIST_UBUNTU_DIR=$AbsDistUbuntuDir" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
+          "DIST_DIR=$DistDir" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
+          "DIST_FILES_DIR=$DistDir\dist_files" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
+          "DIST_WINDOWS_DIR=$DistWindowsDir" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
+          "DIST_UBUNTU_DIR=$DistDir\ubuntu" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
 
           $ChangesFilePath = "dist/changes-v${$env:CLEAN_VERSION}.md"
           if(Test-Path $ChangesFilePath){

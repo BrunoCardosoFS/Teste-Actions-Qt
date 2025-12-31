@@ -5,6 +5,9 @@ param (
     [string]$ProjectName = "Programa"
 )
 
+$AbsDistFilesDir = Resolve-Path -Path $env:DIST_FILES_DIR
+$AbsDistWindowsDir = Resolve-Path -Path $env:DIST_WINDOWS_DIR
+
 Write-Host "--- Starting CMake Configuration ---" -ForegroundColor Green
 cmake -B $BuildDir -S . -DCMAKE_BUILD_TYPE=$Config -DAPP_VERSION="$env:VERSION" -DCLEAN_APP_VERSION="$env:CLEAN_VERSION"
 if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
@@ -16,13 +19,13 @@ if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
 
 Write-Host "--- Preparing Deploy ---" -ForegroundColor Green
-New-Item -ItemType Directory -Path "$env:DIST_WINDOWS_DIR\$ProjectName"
-Copy-Item "$BuildDir\$Config\$ProjectName.exe" -Destination "$env:DIST_WINDOWS_DIR\$ProjectName"
+New-Item -ItemType Directory -Path "$AbsDistWindowsDir\$ProjectName"
+Copy-Item "$BuildDir\$Config\$ProjectName.exe" -Destination "$AbsDistWindowsDir\$ProjectName"
 Remove-Item -Recurse -Force $BuildDir
 
 
 Write-Host "--- Windeployqt ---" -ForegroundColor Green
-windeployqt --dir $env:DIST_WINDOWS_DIR\$ProjectName --no-translations "$env:DIST_WINDOWS_DIR\$ProjectName\$ProjectName.exe"
+windeployqt --dir $AbsDistWindowsDir\$ProjectName --no-translations "$AbsDistWindowsDir\$ProjectName\$ProjectName.exe"
 
 
 Write-Host "--- Get NaxiServer ---" -ForegroundColor Green
@@ -54,26 +57,26 @@ try {
     Write-Host "Downloading $FileName..." -ForegroundColor Yellow
     Invoke-WebRequest -Uri $DownloadUrl -OutFile $ZipPath
 
-    Write-Host "Unpacking to $env:DIST_WINDOWS_DIR..." -ForegroundColor Yellow
-    Expand-Archive -Path $ZipPath -DestinationPath $env:DIST_WINDOWS_DIR -Force
+    Write-Host "Unpacking to $AbsDistWindowsDir..." -ForegroundColor Yellow
+    Expand-Archive -Path $ZipPath -DestinationPath $AbsDistWindowsDir -Force
 
     Remove-Item $ZipPath
 
-    Write-Host "Success! Files extracted from: $env:DIST_WINDOWS_DIR"
+    Write-Host "Success! Files extracted from: $AbsDistWindowsDir"
 
 } catch {
     Write-Host "An error occurred while accessing the API: $_" -ForegroundColor Red
 }
 
 Write-Host "--- Creating a ZIP File ---" -ForegroundColor Green
-$ZipName = "$env:DIST_FILES_DIR\${ProjectName}-${Version}-Portable-Windows-x86_64.zip"
-Compress-Archive -Path "$env:DIST_WINDOWS_DIR\*" -DestinationPath $ZipName -Force
+$ZipName = "$env:DIST_FILES_DIR\${ProjectName}-${$env:VERSION}-Portable-Windows-x86_64.zip"
+Compress-Archive -Path "$AbsDistWindowsDir\*" -DestinationPath $ZipName -Force
 Write-Host "Build and Packaging completed: $ZipName"
 
 
 Write-Host "--- Downloading Visual C++ Redistributable ---" -ForegroundColor Green
 $VcRedistUrl = "https://aka.ms/vc14/vc_redist.x64.exe"
-$VcRedistPath = Join-Path $env:DIST_WINDOWS_DIR "\..\vc_redist.x64.exe"
+$VcRedistPath = Join-Path $AbsDistWindowsDir "\..\vc_redist.x64.exe"
 Try {
     Invoke-WebRequest -Uri $VcRedistUrl -OutFile $VcRedistPath -UseBasicParsing
     Write-Host "VC Redist downloaded on: $VcRedistPath"
@@ -89,7 +92,8 @@ if (-not (Test-Path $NsisScriptPath)) {
     Write-Error "The installer.nsi file was not found in: $NsisScriptPath"
     exit 1
 }
-makensis /DBUILD_DIR="$env:DIST_WINDOWS_DIR" /DVERSION="$env:VERSION" /DCLEAN_VERSION="$env:CLEAN_VERSION" /DOUTDIR="$env:DIST_FILES_DIR" /V4 "$NsisScriptPath"
+
+makensis /DBUILD_DIR="$AbsDistWindowsDir" /DVERSION="$env:VERSION" /DCLEAN_VERSION="$env:CLEAN_VERSION" /DOUTDIR="$AbsDistFilesDir" /V4 "$NsisScriptPath"
 
 if ($LASTEXITCODE -ne 0) { 
     Write-Error "Failed to create the NSIS installer."
