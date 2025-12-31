@@ -57,7 +57,7 @@ jobs:
 
           "DIST_DIR=$DistDir" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
           "DIST_FILES_DIR=$DistDir\dist_files" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
-          "DIST_WINDOWS_DIR=$DistWindowsDir" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
+          "DIST_WINDOWS_DIR=$DistDir\windows" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
           "DIST_UBUNTU_DIR=$DistDir\ubuntu" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
 
           $ChangesFilePath = "dist/changes-v${$env:CLEAN_VERSION}.md"

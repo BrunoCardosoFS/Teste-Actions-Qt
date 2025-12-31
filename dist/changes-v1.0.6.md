@@ -2,4 +2,5 @@
 ---
 - Adição da versão no título da janela
 - E muito mais!
+- Olá mundo!!!!!
 - Adição do NaxiServer
