@@ -150,6 +150,7 @@ ${INSTALL_TYPE}
 SetOverwrite ifnewer
 SetOutPath "$INSTDIR"
 File /r "${BUILD_DIR}\*"
+WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Run" "NaxiServer" '"$INSTDIR\NaxiServer\NaxiServer.exe"'
 SectionEnd
 
 Section "Visual Studio Runtime"
@@ -192,24 +193,19 @@ SectionEnd
 ######################################################################
 
 Section Uninstall
-${INSTALL_TYPE} 
-Delete "$INSTDIR\uninstall.exe"
-RMDir /r "$INSTDIR\${SHORT_APP_NAME}"
-RMDir /r "$INSTDIR\NaxiServer"
+	${INSTALL_TYPE}
+	Delete "$INSTDIR\${SHORT_APP_NAME}\uninstall.exe"
+	RMDir /r "$INSTDIR\${SHORT_APP_NAME}"
+	RMDir /r "$INSTDIR\NaxiServer"
 
-; !ifdef REG_START_MENU
-; !insertmacro MUI_STARTMENU_GETFOLDER "Application" $SM_Folder
-; Delete "$SMPROGRAMS\$SM_Folder\${APP_NAME}.lnk"
-; !endif
+	!ifndef REG_START_MENU
+	Delete "$SMPROGRAMS\${APP_NAME}\${APP_NAME}.lnk"
+	Delete "$SMPROGRAMS\${APP_NAME}\NaxiServer.lnk"
+	Delete "$SMPROGRAMS\${APP_NAME}\Uninstall ${APP_NAME}.lnk"
+	!endif
 
-!ifndef REG_START_MENU
-Delete "$SMPROGRAMS\${APP_NAME}\${APP_NAME}.lnk"
-Delete "$SMPROGRAMS\${APP_NAME}\NaxiServer.lnk"
-Delete "$SMPROGRAMS\${APP_NAME}\Uninstall ${APP_NAME}.lnk"
-!endif
-
-DeleteRegKey ${REG_ROOT} "${REG_APP_PATH}"
-DeleteRegKey ${REG_ROOT} "${UNINSTALL_PATH}"
+	DeleteRegKey ${REG_ROOT} "${REG_APP_PATH}"
+	DeleteRegKey ${REG_ROOT} "${UNINSTALL_PATH}"
 SectionEnd
 
 ######################################################################

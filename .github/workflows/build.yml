@@ -21,20 +21,30 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Check Prerelease
-        id: check_prerelease
-        shell: bash
+      - name: Process Version
+        id: process_version
+        shell: pwsh
         run: |
-          TAG_NAME=${GITHUB_REF_NAME}
-          echo "Tag atual: $TAG_NAME"
+          $Version = "${{ github.ref_name }}"
+
+          $IsPreRelease = if ($Version -like "*-*") { "true" } else { "false" }
+          "IS_PRERELEASE=$IsPreRelease" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
+
+          $RegexPattern = "\d+\.\d+\.\d+"
+          $Match = [regex]::Match($Version, $RegexPattern)
+          if ($Match.Success) {
+              $CleanVersion = $Match.Value
+          } else {
+              $CleanVersion = "1.0.0"
+          }
           
-          if [[ "$TAG_NAME" == *"-"* ]]; then
-            echo "IS_PRERELEASE=true" >> $GITHUB_ENV
-          else
-            echo "IS_PRERELEASE=false" >> $GITHUB_ENV
-          fi
+          "CLEAN_VERSION=$CleanVersion" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
+
+          Write-Host "Program Version: ${{ env.CLEAN_VERSION }}"
+          Write-Host "Pre Release: ${{ env.IS_PRERELEASE }}"
 
       - name: Install Qt
+        if: matrix.os == 'windows-latest'
         uses: jurplel/install-qt-action@v3
         with:
           version: '6.8.3'
@@ -63,7 +73,7 @@ jobs:
           files: |
             Programa-${{ github.ref_name }}-Portable-Windows-x86_64.zip
             Programa-${{ github.ref_name }}-Installer-Windows-x86_64.exe
-          body_path: release.md
+          body_path: dist/changes-v${{ env.CLEAN_VERSION }}.md
           prerelease: ${{ env.IS_PRERELEASE }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
