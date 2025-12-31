@@ -44,8 +44,8 @@ jobs:
           Write-Host "Program Version: $CleanVersion"
           Write-Host "Is Pre Release: $IsPreRelease"
 
-      - name: Create Dist Folders
-        id: dist_folders
+      - name: Create Dist ENVs
+        id: dist_envs
         shell: pwsh
         run: |
           $DistDir = "out"
@@ -64,6 +64,14 @@ jobs:
           "DIST_FILES_DIR=$AbsDistFilesDir" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
           "DIST_WINDOWS_DIR=$AbsDistWindowsDir" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
           "DIST_UBUNTU_DIR=$AbsDistUbuntuDir" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
+
+          $ChangesFilePath = "dist/changes-v${$env:CLEAN_VERSION}.md"
+          if(Test-Path $ChangesFilePath){
+            "BODY_PATH=$ChangesFilePath" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
+          }else{
+            New-Item -ItemType File -Path "dist/release.md" -Value ""
+            "BODY_PATH=dist/release.md" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
+          }
 
       - name: Install Qt
         if: matrix.os == 'windows-latest'
@@ -94,7 +102,7 @@ jobs:
           name: "Programa ${{ github.ref_name }}"
           files: |
             out/dist_files/*
-          body_path: dist/changes-v${{ env.CLEAN_VERSION }}.md
+          body_path: ${{ env.BODY_PATH }}
           prerelease: ${{ env.IS_PRERELEASE }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

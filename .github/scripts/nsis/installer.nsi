@@ -198,8 +198,8 @@ SectionEnd
 Section Uninstall
 	${INSTALL_TYPE}
 	Delete "$INSTDIR\${SHORT_APP_NAME}\uninstall.exe"
-	RMDir /r "$INSTDIR\${SHORT_APP_NAME}\"
-	RMDir /r "$INSTDIR\NaxiServer\"
+	RMDir /r "$INSTDIR"
+	RMDir /r "$INSTDIR\..\NaxiServer\"
 
 	!ifndef REG_START_MENU
 	Delete "$SMPROGRAMS\${APP_NAME}\${APP_NAME}.lnk"
