@@ -69,7 +69,8 @@ jobs:
           if(Test-Path $ChangesFilePath){
             "BODY_PATH=$ChangesFilePath" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
           }else{
-            New-Item -ItemType File -Path "dist/release.md" -Value ""
+            if(!(Test-Path "dist/release.md")){New-Item -ItemType File -Path "dist/release.md" -Value ""}
+            
             "BODY_PATH=dist/release.md" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
           }
 
