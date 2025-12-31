@@ -66,7 +66,6 @@ try {
     Write-Host "An error occurred while accessing the API: $_" -ForegroundColor Red
 }
 
-
 Write-Host "--- Creating a ZIP File ---" -ForegroundColor Green
 $ZipName = "$env:DIST_FILES_DIR\${ProjectName}-${Version}-Portable-Windows-x86_64.zip"
 Compress-Archive -Path "$DistDir\*" -DestinationPath $ZipName -Force

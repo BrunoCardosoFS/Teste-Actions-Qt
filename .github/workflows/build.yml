@@ -84,7 +84,7 @@ jobs:
       - name: Build Windows
         if: matrix.os == 'windows-latest'
         shell: pwsh
-        run: ./.github/scripts/BuildWindows.ps1 -ProjectName "Programa" -Version "${{ github.ref_name }}"
+        run: ./.github/scripts/BuildWindows.ps1 -ProjectName "Programa"
 
       # --- CREATING RELEASE ---
       - name: Release
