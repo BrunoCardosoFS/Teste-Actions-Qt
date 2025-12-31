@@ -163,30 +163,24 @@ Section "Visual Studio Runtime"
   ${EndIf}
 SectionEnd
 
+
 ######################################################################
 
 Section -Icons_Reg
 SetOutPath "$INSTDIR"
-WriteUninstaller "$INSTDIR\uninstall.exe"
-
-; !ifdef REG_START_MENU
-; !insertmacro MUI_STARTMENU_WRITE_BEGIN Application
-; CreateDirectory "$SMPROGRAMS\$SM_Folder"
-; CreateShortCut "$SMPROGRAMS\$SM_Folder\${APP_NAME}.lnk" "$INSTDIR\${MAIN_APP_EXE}"
-; CreateShortCut "$SMPROGRAMS\$SM_Folder\Uninstall ${APP_NAME}.lnk" "$INSTDIR\uninstall.exe"
-; !insertmacro MUI_STARTMENU_WRITE_END
-; !endif
+WriteUninstaller "$INSTDIR\${SHORT_APP_NAME}\uninstall.exe"
 
 !ifndef REG_START_MENU
 CreateDirectory "$SMPROGRAMS\${APP_NAME}"
-CreateShortCut "$SMPROGRAMS\${APP_NAME}\${APP_NAME}.lnk" "$INSTDIR\${MAIN_APP_EXE}"
-CreateShortCut "$SMPROGRAMS\${APP_NAME}\Uninstall ${APP_NAME}.lnk" "$INSTDIR\uninstall.exe"
+CreateShortCut "$SMPROGRAMS\${APP_NAME}\${APP_NAME}.lnk" "$INSTDIR\${SHORT_APP_NAME}\${MAIN_APP_EXE}"
+CreateShortCut "$SMPROGRAMS\${APP_NAME}\NaxiServer.lnk" "$INSTDIR\NaxiServer\NaxiServer.exe"
+CreateShortCut "$SMPROGRAMS\${APP_NAME}\Uninstall ${APP_NAME}.lnk" "$INSTDIR\${SHORT_APP_NAME}\uninstall.exe"
 !endif
 
-WriteRegStr ${REG_ROOT} "${REG_APP_PATH}" "" "$INSTDIR\${MAIN_APP_EXE}"
+WriteRegStr ${REG_ROOT} "${REG_APP_PATH}" "" "$INSTDIR\${SHORT_APP_NAME}\${MAIN_APP_EXE}"
 WriteRegStr ${REG_ROOT} "${UNINSTALL_PATH}"  "DisplayName" "${APP_NAME}"
-WriteRegStr ${REG_ROOT} "${UNINSTALL_PATH}"  "UninstallString" "$INSTDIR\uninstall.exe"
-WriteRegStr ${REG_ROOT} "${UNINSTALL_PATH}"  "DisplayIcon" "$INSTDIR\${MAIN_APP_EXE}"
+WriteRegStr ${REG_ROOT} "${UNINSTALL_PATH}"  "UninstallString" "$INSTDIR\${SHORT_APP_NAME}\uninstall.exe"
+WriteRegStr ${REG_ROOT} "${UNINSTALL_PATH}"  "DisplayIcon" "$INSTDIR\${SHORT_APP_NAME}\${MAIN_APP_EXE}"
 WriteRegStr ${REG_ROOT} "${UNINSTALL_PATH}"  "DisplayVersion" "${VERSION}"
 WriteRegStr ${REG_ROOT} "${UNINSTALL_PATH}"  "Publisher" "${COMP_NAME}"
 
@@ -200,7 +194,8 @@ SectionEnd
 Section Uninstall
 ${INSTALL_TYPE} 
 Delete "$INSTDIR\uninstall.exe"
-RMDir /r "$INSTDIR"
+RMDir /r "$INSTDIR\${SHORT_APP_NAME}"
+RMDir /r "$INSTDIR\NaxiServer"
 
 ; !ifdef REG_START_MENU
 ; !insertmacro MUI_STARTMENU_GETFOLDER "Application" $SM_Folder
@@ -209,6 +204,7 @@ RMDir /r "$INSTDIR"
 
 !ifndef REG_START_MENU
 Delete "$SMPROGRAMS\${APP_NAME}\${APP_NAME}.lnk"
+Delete "$SMPROGRAMS\${APP_NAME}\NaxiServer.lnk"
 Delete "$SMPROGRAMS\${APP_NAME}\Uninstall ${APP_NAME}.lnk"
 !endif
 
@@ -225,7 +221,7 @@ FunctionEnd
 ######################################################################
 
 Function Launch
-	Exec '"$INSTDIR\${MAIN_APP_EXE}"'
+	Exec '"$INSTDIR\${SHORT_APP_NAME}\${MAIN_APP_EXE}"'
 FunctionEnd
 
 ######################################################################
