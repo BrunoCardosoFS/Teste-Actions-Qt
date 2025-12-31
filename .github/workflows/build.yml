@@ -93,7 +93,7 @@ jobs:
         with:
           name: "Programa ${{ github.ref_name }}"
           files: |
-            ${{ env.DIST_FILES_DIR }}/*
+            out/dist_files/*
           body_path: dist/changes-v${{ env.CLEAN_VERSION }}.md
           prerelease: ${{ env.IS_PRERELEASE }}
         env:
