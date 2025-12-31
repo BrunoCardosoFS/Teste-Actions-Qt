@@ -69,7 +69,7 @@ try {
 }
 
 Write-Host "--- Creating a ZIP File ---" -ForegroundColor Green
-$ZipName = "$env:DIST_FILES_DIR\${ProjectName}-${$env:VERSION}-Portable-Windows-x86_64.zip"
+$ZipName = "$env:DIST_FILES_DIR\${ProjectName}-${env:VERSION}-Portable-Windows-x86_64.zip"
 Compress-Archive -Path "$AbsDistWindowsDir\*" -DestinationPath $ZipName -Force
 Write-Host "Build and Packaging completed: $ZipName"
 

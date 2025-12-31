@@ -1,0 +1,8 @@
+- Nesta versão você encontra muita coisa nova
+---
+- Adição da versão no título da janela
+- E muito mais!
+- Olá mundo!!!!!
+- Olá mundo
+- Vai aparecer lá
+- Adição do NaxiServer
