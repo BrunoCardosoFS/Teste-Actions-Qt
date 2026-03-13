@@ -1,0 +1,3 @@
+Para corrigir posteriormente:
+
+É possível adicionar uma mídia logo antes de um EndMarker mesmo se a "Mídia atual" for de outro bloco

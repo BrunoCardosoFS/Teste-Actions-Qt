@@ -26,8 +26,9 @@ find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets Multimedia)
 set(PROJECT_SOURCES
         main.cpp
         frontend/resources/resources.qrc
-        frontend/programa.cpp
+
         frontend/programa.h
+        frontend/programa.cpp
         frontend/programa.ui
 )
 
@@ -35,6 +36,11 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     qt_add_executable(Programa
         MANUAL_FINALIZATION
         ${PROJECT_SOURCES}
+        backend/models.h
+        backend/playlist/playlistmodel.h backend/playlist/playlistmodel.cpp
+        backend/playlist/playlistdelegate.h backend/playlist/playlistdelegate.cpp
+        backend/playlist/playlistmanager.h backend/playlist/playlistmanager.cpp
+
     )
 else()
     add_executable(Programa

@@ -197,7 +197,7 @@ SectionEnd
 
 Section Uninstall
 	${INSTALL_TYPE}
-	Delete "$INSTDIR\${SHORT_APP_NAME}\uninstall.exe"
+	Delete "$INSTDIR\uninstall.exe"
 	RMDir /r "$INSTDIR"
 	RMDir /r "$INSTDIR\..\NaxiServer\"
 
@@ -207,8 +207,10 @@ Section Uninstall
 	Delete "$SMPROGRAMS\${APP_NAME}\Uninstall ${APP_NAME}.lnk"
 	!endif
 
-	DeleteRegKey ${REG_ROOT} "${REG_APP_PATH}"
-	DeleteRegKey ${REG_ROOT} "${UNINSTALL_PATH}"
+	; DeleteRegKey ${REG_ROOT} "${REG_APP_PATH}"
+	; DeleteRegKey ${REG_ROOT} "${UNINSTALL_PATH}"
+	DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\App Paths\${MAIN_APP_EXE}"
+	DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APP_NAME}"
 SectionEnd
 
 ######################################################################

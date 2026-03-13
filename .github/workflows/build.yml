@@ -21,8 +21,8 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Process Version
-        id: process_version
+      - name: Setup environment
+        id: setup_environment
         shell: pwsh
         run: |
           $Version = "${{ github.ref_name }}"
@@ -42,12 +42,9 @@ jobs:
           "CLEAN_VERSION=$CleanVersion" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
 
           Write-Host "Program Version: $CleanVersion"
-          Write-Host "Is Pre Release: $IsPreRelease"
+          Write-Host "Is Pre-Release: $IsPreRelease"
 
-      - name: Create Dist ENVs
-        id: dist_envs
-        shell: pwsh
-        run: |
+        
           $DistDir = "out"
           if (Test-Path $DistDir) { Remove-Item -Recurse -Force $DistDir }
           New-Item -ItemType Directory -Path $DistDir
@@ -56,11 +53,11 @@ jobs:
           New-Item -ItemType Directory -Path $DistDir\ubuntu
 
           "DIST_DIR=$DistDir" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
-          "DIST_FILES_DIR=$DistDir\dist_files" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
-          "DIST_WINDOWS_DIR=$DistDir\windows" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
-          "DIST_UBUNTU_DIR=$DistDir\ubuntu" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
+          "DIST_FILES_DIR=$DistDir/dist_files" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
+          "DIST_WINDOWS_DIR=$DistDir/windows" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
+          "DIST_UBUNTU_DIR=$DistDir/ubuntu" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
 
-          $ChangesFilePath = "dist/changes-v${env:CLEAN_VERSION}.md"
+          $ChangesFilePath = "dist/changes-v${CleanVersion}.md"
           if(Test-Path $ChangesFilePath){
             "BODY_PATH=$ChangesFilePath" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
           }else{
@@ -68,7 +65,7 @@ jobs:
             "BODY_PATH=dist/release.md" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
           }
 
-      - name: Install Qt
+      - name: Install Qt (Windows)
         if: matrix.os == 'windows-latest'
         uses: jurplel/install-qt-action@v3
         with:

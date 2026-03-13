@@ -2,8 +2,8 @@
 #define PROGRAMA_H
 
 #include <QMainWindow>
-#include <QMediaPlayer>
-#include <QAudioOutput>
+#include <QThread>
+
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -20,12 +20,11 @@ public:
     ~Programa();
 
 private slots:
-    void on_pushButton_clicked();
 
 private:
     Ui::Programa *ui;
 
-    QMediaPlayer *player = new QMediaPlayer(this);
-    QAudioOutput *audioOutput = new QAudioOutput(this);
+signals:
+    void prepareController();
 };
 #endif // PROGRAMA_H
